@@ -461,7 +461,7 @@ bool readSrcFile(char *filename,uint8 *&img,int &width,int &height, int &expande
 	// Delete temp file if it exists.
 	if(fileExist("tmp.ppm"))
 	{
-		sprintf(str, "rm tmp.ppm\n");
+		sprintf(str, "del tmp.ppm\n");
 		system(str);
 	}
 
@@ -469,7 +469,7 @@ bool readSrcFile(char *filename,uint8 *&img,int &width,int &height, int &expande
 	if(!strcmp(&filename[q],".ppm")) 
 	{
 		// Already a .ppm file. Just copy. 
-		sprintf(str,"cp %s tmp.ppm \n", filename);
+		sprintf(str,"copy %s tmp.ppm \n", filename);
 		printf("Copying source file to tmp.ppm\n", filename);
 	}
 	else
@@ -482,7 +482,7 @@ bool readSrcFile(char *filename,uint8 *&img,int &width,int &height, int &expande
 		// 
 		// C:\magick convert source.jpg dest.ppm
 		//
-		sprintf(str,"convert %s tmp.ppm\n", filename);
+		sprintf(str,"magick convert %s tmp.ppm\n", filename);
 		printf("Converting source file from %s to .ppm\n", filename);
 	}
 	// Execute system call
@@ -495,7 +495,7 @@ bool readSrcFile(char *filename,uint8 *&img,int &width,int &height, int &expande
 	{
 		width=w1;
 		height=h1;
-		system("rm tmp.ppm");
+		system("del tmp.ppm");
 
 		// Width must be divisible by 4 and height must be
 		// divisible by 4. Otherwise, we will expand the image
@@ -559,7 +559,7 @@ bool readSrcFileNoExpand(char *filename,uint8 *&img,int &width,int &height)
 	// Delete temp file if it exists.
 	if(fileExist("tmp.ppm"))
 	{
-		sprintf(str, "rm tmp.ppm\n");
+		sprintf(str, "del tmp.ppm\n");
 		system(str);
 	}
 
@@ -568,7 +568,7 @@ bool readSrcFileNoExpand(char *filename,uint8 *&img,int &width,int &height)
 	if(!strcmp(&filename[q],".ppm")) 
 	{
 		// Already a .ppm file. Just copy. 
-		sprintf(str,"cp %s tmp.ppm \n", filename);
+		sprintf(str,"copy %s tmp.ppm \n", filename);
 		printf("Copying source file to tmp.ppm\n", filename);
 	}
 	else
@@ -581,7 +581,7 @@ bool readSrcFileNoExpand(char *filename,uint8 *&img,int &width,int &height)
 		// 
 		// C:\magick convert source.jpg dest.ppm
 		//
-		sprintf(str,"convert %s tmp.ppm\n", filename);
+		sprintf(str,"magick convert %s tmp.ppm\n", filename);
 //		printf("Converting source file from %s to .ppm\n", filename);
 	}
 	// Execute system call
@@ -591,7 +591,7 @@ bool readSrcFileNoExpand(char *filename,uint8 *&img,int &width,int &height)
 	{
 		width=w1;
 		height=h1;
-		system("rm tmp.ppm");
+		system("del tmp.ppm");
 
 		return true;
 	}
@@ -9472,7 +9472,7 @@ void writeOutputFile(char *dstfile, uint8* img, uint8* alphaimg, int width, int 
 	// Delete destination file if it exists
 	if(fileExist(dstfile))
 	{
-		sprintf(str, "rm %s\n",dstfile);
+		sprintf(str, "del %s\n",dstfile);	
 		system(str);
 	}
 
@@ -9512,12 +9512,12 @@ void writeOutputFile(char *dstfile, uint8* img, uint8* alphaimg, int width, int 
 		}
 		else if(format==ETC2PACKAGE_R_NO_MIPMAPS) 
 		{
-			sprintf(str,"convert alphaout.pgm %s\n",dstfile);
+			sprintf(str,"magick convert alphaout.pgm %s\n",dstfile);
 			printf("Converting destination file from .pgm to %s\n",dstfile);
 		}
 		else 
 		{
-			sprintf(str,"convert tmp.ppm %s\n",dstfile);
+			sprintf(str,"magick convert tmp.ppm %s\n",dstfile);
 			printf("Converting destination file from .ppm to %s\n",dstfile);
 		}
 	}
@@ -15942,7 +15942,7 @@ void compressFile(char *srcfile,char *dstfile)
 			{
 				char str[300];
 				//printf("reading alpha channel....");
-				sprintf(str,"convert %s -alpha extract alpha.pgm\n",srcfile);
+				sprintf(str,"magick convert %s -alpha extract alpha.pgm\n",srcfile);
 				system(str);
 				readAlpha(alphaimg,width,height,extendedwidth,extendedheight);
 				printf("ok!\n");
@@ -15951,7 +15951,7 @@ void compressFile(char *srcfile,char *dstfile)
 			else if(format==ETC2PACKAGE_R_NO_MIPMAPS) 
 			{
 				char str[300];
-				sprintf(str,"convert %s alpha.pgm\n",srcfile);
+				sprintf(str,"magick convert %s alpha.pgm\n",srcfile);
 				system(str);
 				readAlpha(alphaimg,width,height,extendedwidth,extendedheight);
 				printf("read alpha ok, size is %d,%d (%d,%d)",width,height,extendedwidth,extendedheight);
